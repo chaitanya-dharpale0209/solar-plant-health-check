@@ -328,7 +328,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           style={{
             position: 'absolute',
             top: '40px',
-            left: `${Math.min(Math.max(10, (hoveredIdx / (readings.length - 1)) * 85), 75)}%`,
+            left: `${Math.min(Math.max(10, readings.length > 1 ? (hoveredIdx / (readings.length - 1)) * 85 : 50), 75)}%`,
           }}
         >
           <div className="tooltip-date">📅 {hoveredData.date}</div>

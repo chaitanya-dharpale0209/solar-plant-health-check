@@ -1,7 +1,11 @@
 # ☀️ HelioPulse — Solar Plant Health & Diagnostics
 
 > **Take-Home Coding Challenge Submission**  
-> Operational telemetry monitoring, rule-based performance ratio (PR) analytics, and fault pattern diagnostics across 5 solar power installations over 90 consecutive days.
+> Operational telemetry monitoring, rule-based performance ratio (PR) analytics, and fault pattern diagnostics across 5 solar power installations over 90 consecutive days.  
+>  
+> - **GitHub Repository**: [https://github.com/chaitanya-dharpale0209/solar-plant-health-check](https://github.com/chaitanya-dharpale0209/solar-plant-health-check)  
+> - **Live Frontend (Vercel)**: [https://oorjan.vercel.app](https://oorjan.vercel.app)  
+> - **Live Backend**: Render Web Service (see [Deployment Guide](#-free-deployment-guide))
 
 ---
 

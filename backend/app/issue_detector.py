@@ -139,38 +139,40 @@ def calculate_daily_metrics(
     sudden_drop_detected = False
     sudden_drop_onset_dates: List[str] = []
 
-    for idx in range(7, len(daily_readings)):
-        curr_reading = daily_readings[idx]
-        prev_reading = daily_readings[idx - 7]
+    for curr_reading in daily_readings:
+        curr_dt = datetime.strptime(curr_reading.date, "%Y-%m-%d")
+        prev_date_str = (curr_dt - timedelta(days=7)).strftime("%Y-%m-%d")
+        if prev_date_str in date_to_idx:
+            prev_reading = daily_readings[date_to_idx[prev_date_str]]
 
-        if curr_reading.rolling_pr_7d is not None and prev_reading.rolling_pr_7d is not None:
-            if prev_reading.rolling_pr_7d > 0:
-                drop_pct = (prev_reading.rolling_pr_7d - curr_reading.rolling_pr_7d) / prev_reading.rolling_pr_7d
-                if drop_pct > 0.20:
-                    sudden_drop_detected = True
-                    # Only create an issue for the initial onset or significant distinct drops
-                    # Check if an onset was flagged within the last 14 days
-                    recent_flags = [
-                        d for d in sudden_drop_onset_dates
-                        if abs((datetime.strptime(curr_reading.date, "%Y-%m-%d") - datetime.strptime(d, "%Y-%m-%d")).days) < 14
-                    ]
-                    if not recent_flags:
-                        sudden_drop_onset_dates.append(curr_reading.date)
-                        curr_reading.flags.append("Sudden Drop (>20%)")
-                        issues.append(
-                            Issue(
-                                date=curr_reading.date,
-                                issue_type="SUDDEN_DROP",
-                                severity=IssueSeverity.CRITICAL,
-                                title=f"Sudden Performance Drop ({curr_reading.date})",
-                                reason=(
-                                    f"7-day rolling PR fell by {drop_pct * 100:.1f}% "
-                                    f"(from {prev_reading.rolling_pr_7d:.3f} to {curr_reading.rolling_pr_7d:.3f}) "
-                                    f"compared with the 7 days prior. Indicates rapid component failure, "
-                                    f"sub-array isolation, or severe soiling event."
-                                ),
+            if curr_reading.rolling_pr_7d is not None and prev_reading.rolling_pr_7d is not None:
+                if prev_reading.rolling_pr_7d > 0:
+                    drop_pct = (prev_reading.rolling_pr_7d - curr_reading.rolling_pr_7d) / prev_reading.rolling_pr_7d
+                    if drop_pct > 0.20:
+                        sudden_drop_detected = True
+                        # Only create an issue for the initial onset or significant distinct drops
+                        # Check if an onset was flagged within the last 14 days
+                        recent_flags = [
+                            d for d in sudden_drop_onset_dates
+                            if abs((curr_dt - datetime.strptime(d, "%Y-%m-%d")).days) < 14
+                        ]
+                        if not recent_flags:
+                            sudden_drop_onset_dates.append(curr_reading.date)
+                            curr_reading.flags.append("Sudden Drop (>20%)")
+                            issues.append(
+                                Issue(
+                                    date=curr_reading.date,
+                                    issue_type="SUDDEN_DROP",
+                                    severity=IssueSeverity.CRITICAL,
+                                    title=f"Sudden Performance Drop ({curr_reading.date})",
+                                    reason=(
+                                        f"7-day rolling PR fell by {drop_pct * 100:.1f}% "
+                                        f"(from {prev_reading.rolling_pr_7d:.3f} to {curr_reading.rolling_pr_7d:.3f}) "
+                                        f"compared with the 7 days prior. Indicates rapid component failure, "
+                                        f"sub-array isolation, or severe soiling event."
+                                    ),
+                                )
                             )
-                        )
 
     # 4. Detect Pattern: Gradual Decline
     # Rule: average PR of the last 14 days is more than 10% lower than that of the first 14 days,

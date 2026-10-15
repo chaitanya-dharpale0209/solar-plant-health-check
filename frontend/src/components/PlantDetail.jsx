@@ -255,7 +255,10 @@ export default function PlantDetail({
 
             <GenerationIrradianceChart
               readings={daily_readings}
-              onSelectDate={(d) => setHighlightDate(d)}
+              onSelectDate={(d) => {
+                setHighlightDate(d);
+                setActiveTab('telemetry');
+              }}
             />
           </div>
 

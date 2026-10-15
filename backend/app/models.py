@@ -25,6 +25,7 @@ class Issue(BaseModel):
 
 
 class DataQualityFlag(BaseModel):
+    site_id: Optional[str] = None
     date: str
     field: str
     raw_value: Optional[str] = None

@@ -35,7 +35,7 @@ def get_processed_data(csv_path: Optional[str] = None):
         for site_id, rows in grouped_rows.items():
             daily_readings, issues, summary = calculate_daily_metrics(rows)
             # Filter quality logs for this site
-            site_logs = [log for log in quality_logs if site_id in log.description or site_id in log.raw_value]
+            site_logs = [log for log in quality_logs if log.site_id == site_id]
             plants_dict[site_id] = {
                 "summary": summary,
                 "readings": daily_readings,

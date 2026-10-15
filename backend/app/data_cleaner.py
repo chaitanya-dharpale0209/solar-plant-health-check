@@ -91,6 +91,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         if key in seen_site_dates:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=normalized_date,
                     field="record",
                     raw_value=f"duplicate row for {site_id}",
@@ -122,6 +123,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         if irradiance is None:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="irradiance",
                     raw_value=raw_irr,
@@ -133,6 +135,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         elif irradiance < 0:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="irradiance",
                     raw_value=str(irradiance),
@@ -149,6 +152,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         if generation_kwh is None:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="generation_kwh",
                     raw_value=raw_gen,
@@ -160,6 +164,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         elif generation_kwh < 0:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="generation_kwh",
                     raw_value=str(generation_kwh),
@@ -180,6 +185,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
                 if generation_kwh > max_theoretical * 1.5:
                     quality_logs.append(
                         DataQualityFlag(
+                            site_id=site_id,
                             date=date_str,
                             field="generation_kwh",
                             raw_value=str(generation_kwh),
@@ -199,6 +205,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         if cloud_cover is None:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="cloud_cover",
                     raw_value=raw_cloud,
@@ -209,6 +216,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         elif cloud_cover > 100.0:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="cloud_cover",
                     raw_value=str(cloud_cover),
@@ -227,6 +235,7 @@ def clean_and_load_csv(csv_path: str) -> Tuple[Dict[str, List[CleanedRow]], List
         if temperature is None:
             quality_logs.append(
                 DataQualityFlag(
+                    site_id=site_id,
                     date=date_str,
                     field="temperature",
                     raw_value=raw_temp,

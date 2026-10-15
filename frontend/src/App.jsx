@@ -12,7 +12,10 @@ import Overview from './components/Overview';
 import PlantDetail from './components/PlantDetail';
 import AuditModal from './components/AuditModal';
 
-const API_BASE = ''; // proxied via Vite to http://127.0.0.1:8000
+// Base URL for API requests: defaults to relative path (proxied in Vite or served by FastAPI)
+// or can be overridden via VITE_API_URL for separate frontend/backend deployments
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const DOCS_URL = API_BASE ? `${API_BASE}/docs` : '/docs';
 
 export default function App() {
   const [fleetData, setFleetData] = useState(null);
@@ -167,7 +170,7 @@ export default function App() {
           </button>
 
           <a
-            href="http://127.0.0.1:8000/docs"
+            href={DOCS_URL}
             target="_blank"
             rel="noreferrer"
             className="btn btn-secondary btn-sm"

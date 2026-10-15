@@ -95,7 +95,8 @@ def test_real_dataset_patterns():
     # 2. Plant S3: Sudden Drop detected (around Feb 22)
     _, issues_s3, summary_s3 = calculate_daily_metrics(grouped["S3"])
     sudden_drops = [iss for iss in issues_s3 if iss.issue_type == "SUDDEN_DROP"]
-    assert len(sudden_drops) >= 1
+    assert len(sudden_drops) == 1
+    assert sudden_drops[0].date == "2026-02-25"
     assert summary_s3.current_status == "Underperforming"
 
     # 3. Plant S4: Multiple Outages detected
