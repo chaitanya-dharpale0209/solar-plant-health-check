@@ -15,7 +15,8 @@
 7. [Edge Cases & Where Logic Might Give a Wrong Answer](#-edge-cases--where-logic-might-give-a-wrong-answer)
 8. [What Would Be Improved with More Time](#-what-would-be-improved-with-more-time)
 9. [AI Tools Disclosure](#-ai-tools-disclosure)
-10. [Free Deployment Guide (Render / Vercel)](#-free-deployment-guide)
+10. [Screenshots](#-screenshots)
+11. [Free Deployment Guide (Render / Vercel)](#-free-deployment-guide)
 
 ---
 
@@ -478,6 +479,32 @@ As permitted in the instructions, an AI coding assistant was utilized as a pair-
 - **Dataset Exploration**: Inspecting `solar_plant_data.csv` to quickly locate anomalous lines (duplicate entries on Jan 15 and Mar 10, the 48,210 kWh spike on Jan 20, and negative generation values).
 - **CSS Design & SVG Math**: Crafting the dual-axis chart viewBox layout and threshold background bands.
 - **Code Authorship & Understanding**: All mathematical formulas, 7-day rolling exclusion logic, sudden drop threshold tests, and architectural decisions were explicitly directed, reviewed, and validated with unit tests.
+
+---
+
+## 📸 Screenshots
+
+All screenshots are stored in the [`screenshots/`](screenshots/) directory.
+
+### Fleet Overview (Desktop)
+All 5 plants with health status, 7-day rolling PR, active issue highlights, and fleet KPIs.
+
+![Fleet Overview Desktop](screenshots/01-overview-desktop.png)
+
+### Plant Detail — S3 Sudden Drop
+Charts of daily generation vs. irradiance with problem days flagged, plus the Performance Ratio chart showing the PR collapse from ~0.78 to ~0.45 (Feb 22 onwards).
+
+![Plant Detail S3 Sudden Drop](screenshots/02-plant-detail-S3-sudden-drop.png)
+
+### Plant Detail — S4 Recurring Outages
+The outage-heavy plant: chart highlights zero-generation days (red markers) against strong irradiance.
+
+![Plant Detail S4 Outages](screenshots/03-plant-detail-S4-outages.png)
+
+### Responsive Mobile View
+The UI adapts to small screens: cards stack vertically and remain fully operable.
+
+![Overview Mobile](screenshots/04-overview-mobile.png)
 
 ---
 
