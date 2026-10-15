@@ -81,10 +81,18 @@ export default function App() {
 
   useEffect(() => {
     fetchFleet();
+    // Restore deep link (e.g. #/plant/S3) on first load
+    const hash = window.location.hash;
+    const match = hash.match(/^#\/plant\/([^/]+)$/);
+    if (match) {
+      setSelectedPlantId(match[1].toUpperCase());
+      fetchPlantDetail(match[1].toUpperCase(), '', '');
+    }
   }, []);
 
   const handleSelectPlant = (plantId) => {
     setSelectedPlantId(plantId);
+    window.location.hash = `#/plant/${plantId}`;
     setFilterStartDate('');
     setFilterEndDate('');
     fetchPlantDetail(plantId, '', '');
@@ -95,6 +103,7 @@ export default function App() {
     setPlantDetail(null);
     setFilterStartDate('');
     setFilterEndDate('');
+    window.location.hash = '';
   };
 
   const handleDateFilterChange = (start, end) => {
@@ -104,6 +113,25 @@ export default function App() {
       fetchPlantDetail(selectedPlantId, start, end);
     }
   };
+
+  // Browser back/forward navigation between Overview and Plant Detail
+  useEffect(() => {
+    const onHashChange = () => {
+      const hash = window.location.hash;
+      const match = hash.match(/^#\/plant\/([^/]+)$/);
+      if (match) {
+        const plantId = match[1].toUpperCase();
+        if (plantId !== selectedPlantId) handleSelectPlant(plantId);
+      } else {
+        setSelectedPlantId(null);
+        setPlantDetail(null);
+        setFilterStartDate('');
+        setFilterEndDate('');
+      }
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  });
 
   return (
     <div className="app-container">
