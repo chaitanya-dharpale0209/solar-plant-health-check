@@ -69,16 +69,16 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
       >
         <defs>
           <linearGradient id="healthyZoneGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.12" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0.04" />
+            <stop offset="0%" stopColor="#4cc38a" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#4cc38a" stopOpacity="0.04" />
           </linearGradient>
           <linearGradient id="attentionZoneGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.12" />
-            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.04" />
+            <stop offset="0%" stopColor="#e2a53c" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#e2a53c" stopOpacity="0.04" />
           </linearGradient>
           <linearGradient id="dangerZoneGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ef4444" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#ef4444" stopOpacity="0.04" />
+            <stop offset="0%" stopColor="#e5604c" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#e5604c" stopOpacity="0.04" />
           </linearGradient>
         </defs>
 
@@ -114,7 +114,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           y1={yHealthyLine}
           x2={width - padding.right}
           y2={yHealthyLine}
-          stroke="#10b981"
+          stroke="#4cc38a"
           strokeWidth="1.5"
           strokeDasharray="4 4"
         />
@@ -122,7 +122,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           x={width - padding.right - 5}
           y={yHealthyLine - 5}
           textAnchor="end"
-          fill="#10b981"
+          fill="#4cc38a"
           fontSize="10"
           fontWeight="bold"
         >
@@ -135,7 +135,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           y1={yAttentionLine}
           x2={width - padding.right}
           y2={yAttentionLine}
-          stroke="#f59e0b"
+          stroke="#e2a53c"
           strokeWidth="1.5"
           strokeDasharray="4 4"
         />
@@ -143,7 +143,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           x={width - padding.right - 5}
           y={yAttentionLine - 5}
           textAnchor="end"
-          fill="#f59e0b"
+          fill="#e2a53c"
           fontSize="10"
           fontWeight="bold"
         >
@@ -181,7 +181,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           <path
             d={dailyLinePath}
             fill="none"
-            stroke="rgba(168, 85, 247, 0.35)"
+            stroke="rgba(182, 136, 224, 0.35)"
             strokeWidth="1.2"
           />
         )}
@@ -193,7 +193,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
             cx={pt.x}
             cy={pt.y}
             r="2.5"
-            fill="rgba(168, 85, 247, 0.6)"
+            fill="rgba(182, 136, 224, 0.6)"
           />
         ))}
 
@@ -202,7 +202,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           <path
             d={rollingLinePath}
             fill="none"
-            stroke="#a855f7"
+            stroke="#b688e0"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -221,12 +221,12 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
                   y1={padding.top}
                   x2={x}
                   y2={padding.top + chartH}
-                  stroke="#ef4444"
+                  stroke="#e5604c"
                   strokeWidth="2"
                   strokeDasharray="3 3"
                 />
-                <circle cx={x} cy={y} r="7" fill="#ef4444" stroke="#fff" strokeWidth="2" />
-                <rect x={x - 45} y={padding.top + 8} width="90" height="18" rx="4" fill="#ef4444" />
+                <circle cx={x} cy={y} r="7" fill="#e5604c" stroke="#fff" strokeWidth="2" />
+                <rect x={x - 45} y={padding.top + 8} width="90" height="18" rx="4" fill="#e5604c" />
                 <text
                   x={x}
                   y={padding.top + 21}
@@ -298,7 +298,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
                 cx={getX(hoveredIdx)}
                 cy={getY(readings[hoveredIdx].rolling_pr_7d)}
                 r="6"
-                fill="#a855f7"
+                fill="#b688e0"
                 stroke="#fff"
                 strokeWidth="2"
               />
@@ -315,7 +315,7 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
           left: '55px',
           fontSize: '0.75rem',
           fontWeight: '600',
-          color: '#a855f7',
+          color: '#b688e0',
         }}
       >
         ▲ Performance Ratio (PR)
@@ -333,11 +333,11 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
         >
           <div className="tooltip-date">📅 {hoveredData.date}</div>
           <div className="tooltip-row">
-            <span style={{ color: '#a855f7' }}>7-Day Rolling PR:</span>
+            <span style={{ color: '#b688e0' }}>7-Day Rolling PR:</span>
             <strong>{hoveredData.rolling_pr_7d !== null ? hoveredData.rolling_pr_7d.toFixed(3) : 'Skipped'}</strong>
           </div>
           <div className="tooltip-row">
-            <span style={{ color: 'rgba(168, 85, 247, 0.8)' }}>Single Day PR:</span>
+            <span style={{ color: 'rgba(182, 136, 224, 0.8)' }}>Single Day PR:</span>
             <span>{hoveredData.pr !== null ? hoveredData.pr.toFixed(3) : (hoveredData.is_outage ? '0.0 (Outage)' : 'N/A')}</span>
           </div>
           <div className="tooltip-row">
@@ -346,10 +346,10 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
               style={{
                 color:
                   hoveredData.status === 'Healthy'
-                    ? '#10b981'
+                    ? '#4cc38a'
                     : hoveredData.status === 'Needs attention'
-                    ? '#f59e0b'
-                    : '#ef4444',
+                    ? '#e2a53c'
+                    : '#e5604c',
                 fontWeight: 600,
               }}
             >
@@ -357,12 +357,12 @@ export default function PerformanceRatioChart({ readings = [], issues = [] }) {
             </span>
           </div>
           {hoveredData.is_low_irradiance && (
-            <div style={{ color: '#38bdf8', fontSize: '0.75rem', marginTop: '4px' }}>
+            <div style={{ color: '#6fb5d8', fontSize: '0.75rem', marginTop: '4px' }}>
               ℹ Low Irradiance (&lt;1.0) excluded from average
             </div>
           )}
           {hoveredData.is_outage && (
-            <div style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '4px' }}>
+            <div style={{ color: '#e5604c', fontSize: '0.75rem', marginTop: '4px' }}>
               ⚠ Outage day excluded from rolling PR
             </div>
           )}

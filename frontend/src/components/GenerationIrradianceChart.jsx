@@ -77,11 +77,11 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
       >
         <defs>
           <linearGradient id="genAreaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#f59e0b" stopOpacity="0.0" />
+            <stop offset="0%" stopColor="#e6b450" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="#e6b450" stopOpacity="0.0" />
           </linearGradient>
           <linearGradient id="irrGlow" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#38bdf8" />
+            <stop offset="0%" stopColor="#6fb5d8" />
             <stop offset="100%" stopColor="#0284c7" />
           </linearGradient>
         </defs>
@@ -106,7 +106,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
                 x={padding.left - 10}
                 y={y + 4}
                 textAnchor="end"
-                fill="#f59e0b"
+                fill="#e6b450"
                 fontSize="11"
                 fontFamily="JetBrains Mono, monospace"
               >
@@ -117,7 +117,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
                 x={width - padding.right + 10}
                 y={y + 4}
                 textAnchor="start"
-                fill="#38bdf8"
+                fill="#6fb5d8"
                 fontSize="11"
                 fontFamily="JetBrains Mono, monospace"
               >
@@ -133,7 +133,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
           <path
             d={genLinePath}
             fill="none"
-            stroke="#f59e0b"
+            stroke="#e6b450"
             strokeWidth="2.5"
             strokeLinejoin="round"
           />
@@ -144,7 +144,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
           <path
             d={irrLinePath}
             fill="none"
-            stroke="#38bdf8"
+            stroke="#6fb5d8"
             strokeWidth="2"
             strokeDasharray="5 3"
             strokeLinejoin="round"
@@ -155,13 +155,13 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
         {outagePoints.map((pt, i) => (
           <g key={i} style={{ cursor: 'pointer' }} onClick={() => onSelectDate && onSelectDate(pt.date)}>
             <circle cx={pt.x} cy={padding.top + chartH} r="14" fill="rgba(239, 68, 68, 0.25)" />
-            <circle cx={pt.x} cy={padding.top + chartH} r="6" fill="#ef4444" stroke="#fff" strokeWidth="2" />
+            <circle cx={pt.x} cy={padding.top + chartH} r="6" fill="#e5604c" stroke="#fff" strokeWidth="2" />
             <line
               x1={pt.x}
               y1={padding.top}
               x2={pt.x}
               y2={padding.top + chartH}
-              stroke="#ef4444"
+              stroke="#e5604c"
               strokeWidth="1.5"
               strokeDasharray="2 2"
               opacity="0.8"
@@ -172,7 +172,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
               width="48"
               height="18"
               rx="4"
-              fill="#ef4444"
+              fill="#e5604c"
             />
             <text
               x={pt.x}
@@ -245,7 +245,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
                 cx={getX(hoveredIdx)}
                 cy={getYGen(readings[hoveredIdx].generation_kwh)}
                 r="5"
-                fill="#f59e0b"
+                fill="#e6b450"
                 stroke="#fff"
                 strokeWidth="2"
               />
@@ -255,7 +255,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
                 cx={getX(hoveredIdx)}
                 cy={getYIrr(readings[hoveredIdx].irradiance)}
                 r="4"
-                fill="#38bdf8"
+                fill="#6fb5d8"
                 stroke="#fff"
                 strokeWidth="1.5"
               />
@@ -272,7 +272,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
           left: '60px',
           fontSize: '0.75rem',
           fontWeight: '600',
-          color: '#f59e0b',
+          color: '#e6b450',
         }}
       >
         ▲ Energy Generated (kWh)
@@ -284,7 +284,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
           right: '60px',
           fontSize: '0.75rem',
           fontWeight: '600',
-          color: '#38bdf8',
+          color: '#6fb5d8',
         }}
       >
         Irradiance (kWh/m²) ▲
@@ -303,15 +303,15 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
           <div className="tooltip-date">
             📅 {hoveredData.date}
             {hoveredData.is_outage && (
-              <span style={{ color: '#ef4444', marginLeft: '6px' }}>● OUTAGE</span>
+              <span style={{ color: '#e5604c', marginLeft: '6px' }}>● OUTAGE</span>
             )}
           </div>
           <div className="tooltip-row">
-            <span style={{ color: '#f59e0b' }}>● Generation:</span>
+            <span style={{ color: '#e6b450' }}>● Generation:</span>
             <strong>{hoveredData.generation_kwh !== null ? `${hoveredData.generation_kwh.toFixed(1)} kWh` : 'Missing'}</strong>
           </div>
           <div className="tooltip-row">
-            <span style={{ color: '#38bdf8' }}>--- Irradiance:</span>
+            <span style={{ color: '#6fb5d8' }}>--- Irradiance:</span>
             <strong>{hoveredData.irradiance !== null ? `${hoveredData.irradiance.toFixed(2)} kWh/m²` : 'Missing'}</strong>
           </div>
           <div className="tooltip-row">
@@ -334,7 +334,7 @@ export default function GenerationIrradianceChart({ readings = [], onSelectDate 
                   style={{
                     display: 'inline-block',
                     fontSize: '0.7rem',
-                    background: hoveredData.is_outage ? '#ef4444' : '#f59e0b',
+                    background: hoveredData.is_outage ? '#e5604c' : '#e6b450',
                     color: '#fff',
                     padding: '2px 5px',
                     borderRadius: '3px',

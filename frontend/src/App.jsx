@@ -165,7 +165,7 @@ export default function App() {
             onClick={() => setShowAuditModal(true)}
             title="Inspect Sanitization Logs"
           >
-            <ShieldCheck size={14} style={{ color: '#10b981' }} />
+            <ShieldCheck size={14} style={{ color: '#4cc38a' }} />
             <span>Audit Log</span>
           </button>
 
@@ -205,7 +205,7 @@ export default function App() {
           </div>
         ) : error ? (
           <div className="empty-state">
-            <div style={{ color: '#ef4444', marginBottom: '12px' }}>
+            <div style={{ color: '#e5604c', marginBottom: '12px' }}>
               <ShieldCheck size={40} />
             </div>
             <h3 style={{ color: '#fff', marginBottom: '8px' }}>Telemetry Service Offline</h3>

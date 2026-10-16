@@ -9,14 +9,72 @@ import {
   ArrowRight,
   ShieldCheck,
   TrendingDown,
-  Layers,
 } from 'lucide-react';
 
-export default function Overview({
-  fleetData,
-  onSelectPlant,
-  onViewAudit,
-}) {
+/* ---- Animated counter ---- */
+function useCountUp(target, duration = 1100) {
+  const [value, setValue] = React.useState(0);
+  React.useEffect(() => {
+    if (target === null || target === undefined) return undefined;
+    let raf;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(target * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+  return value;
+}
+
+/* ---- Radial PR gauge ---- */
+function PRGauge({ pr, color }) {
+  const prValue = pr !== null && pr !== undefined ? pr : 0;
+  const animated = useCountUp(prValue);
+  const pct = Math.min(100, animated * 100);
+  const R = 38;
+  const CIRC = 2 * Math.PI * R;
+  return (
+    <div className="gauge-wrap reveal">
+      <svg viewBox="0 0 92 92" width="92" height="92">
+        <defs>
+          <linearGradient id={`gaugeGrad-${color.replace('#', '')}`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.55" />
+            <stop offset="100%" stopColor={color} />
+          </linearGradient>
+        </defs>
+        <circle cx="46" cy="46" r={R} fill="none" strokeWidth="7" className="gauge-track" />
+        <circle
+          cx="46"
+          cy="46"
+          r={R}
+          fill="none"
+          stroke={`url(#gaugeGrad-${color.replace('#', '')})`}
+          strokeWidth="7"
+          strokeLinecap="round"
+          strokeDasharray={CIRC}
+          strokeDashoffset={CIRC * (1 - pct / 100)}
+          transform="rotate(-90 46 46)"
+        />
+      </svg>
+      <div className="gauge-numbers">
+        <span className="big">{pr !== null ? animated.toFixed(3) : '—'}</span>
+        <span className="small">PR</span>
+      </div>
+    </div>
+  );
+}
+
+const STATUS_META = {
+  Healthy: { cls: 'healthy', color: '#4cc38a', glow: 'rgba(76,195,138,0.5)' },
+  'Needs attention': { cls: 'attention', color: '#e2a53c', glow: 'rgba(226,165,60,0.5)' },
+  Underperforming: { cls: 'underperforming', color: '#e5604c', glow: 'rgba(229,96,76,0.5)' },
+};
+
+export default function Overview({ fleetData, onSelectPlant, onViewAudit }) {
   if (!fleetData) return null;
 
   const {
@@ -32,73 +90,90 @@ export default function Overview({
   const attentionCount = fleet_health_summary['Needs attention'] || 0;
   const underperformingCount = fleet_health_summary['Underperforming'] || 0;
 
-  const getStatusClass = (status) => {
-    if (status === 'Healthy') return 'healthy';
-    if (status === 'Needs attention') return 'attention';
-    return 'underperforming';
-  };
-
-  const getStatusIcon = (status) => {
-    if (status === 'Healthy') return <CheckCircle2 size={14} />;
-    if (status === 'Needs attention') return <AlertTriangle size={14} />;
-    return <AlertCircle size={14} />;
-  };
+  const capacity = useCountUp(total_fleet_capacity_kw);
+  const mwh = useCountUp(total_fleet_generation_kwh / 1000);
 
   return (
     <div>
-      {/* Fleet Executive Summary KPIs */}
+      {/* ===== KPI Bento Row ===== */}
       <div className="kpi-grid">
-        <div className="kpi-card">
+        <div className="kpi-card reveal" style={{ animationDelay: '40ms' }}>
           <div className="kpi-header">
-            <span className="kpi-label">Fleet Capacity</span>
-            <Zap size={20} className="kpi-icon" style={{ color: '#f59e0b' }} />
+            <span className="kpi-label">Installed Capacity</span>
+            <Zap size={18} className="kpi-icon" style={{ color: '#e6b450' }} />
           </div>
-          <div className="kpi-value">{total_fleet_capacity_kw} <span style={{ fontSize: '1.1rem', color: '#94a3b8' }}>kW</span></div>
-          <div className="kpi-subtext">5 Monitored Solar Installations</div>
+          <div className="kpi-value">
+            {Math.round(capacity)}
+            <span className="kpi-unit">kW</span>
+          </div>
+          <div className="kpi-subtext">Across 5 monitored installations</div>
         </div>
 
-        <div className="kpi-card">
+        <div className="kpi-card reveal" style={{ animationDelay: '100ms' }}>
           <div className="kpi-header">
-            <span className="kpi-label">90-Day Energy</span>
-            <Sun size={20} className="kpi-icon" style={{ color: '#38bdf8' }} />
+            <span className="kpi-label">90-Day Energy Yield</span>
+            <Sun size={18} className="kpi-icon" style={{ color: '#6fb5d8' }} />
           </div>
-          <div className="kpi-value">{(total_fleet_generation_kwh / 1000).toFixed(1)} <span style={{ fontSize: '1.1rem', color: '#94a3b8' }}>MWh</span></div>
-          <div className="kpi-subtext">{total_fleet_generation_kwh.toLocaleString()} kWh total generation</div>
+          <div className="kpi-value">
+            {mwh.toFixed(1)}
+            <span className="kpi-unit">MWh</span>
+          </div>
+          <div className="kpi-subtext">{Math.round(total_fleet_generation_kwh).toLocaleString()} kWh generated total</div>
         </div>
 
-        <div className="kpi-card">
+        <div className="kpi-card reveal" style={{ animationDelay: '160ms' }}>
           <div className="kpi-header">
-            <span className="kpi-label">Fleet Health Status</span>
-            <Activity size={20} className="kpi-icon" style={{ color: '#10b981' }} />
+            <span className="kpi-label">Fleet Health</span>
+            <Activity size={18} className="kpi-icon" style={{ color: '#4cc38a' }} />
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ color: '#10b981', fontWeight: 700, fontSize: '1.5rem' }}>{healthyCount} Healthy</span>
-            <span style={{ color: '#64748b' }}>/</span>
-            <span style={{ color: '#f59e0b', fontWeight: 600, fontSize: '1.1rem' }}>{attentionCount} Attn</span>
-            <span style={{ color: '#64748b' }}>/</span>
-            <span style={{ color: '#ef4444', fontWeight: 600, fontSize: '1.1rem' }}>{underperformingCount} Under</span>
+          <div className="fleet-composition">
+            <span style={{
+              flexBasis: `${(healthyCount / plants.length) * 100 || 0}%`,
+              minWidth: healthyCount > 0 ? undefined : '0',
+              background: 'linear-gradient(90deg,#2f9e6c,#4cc38a)',
+            }} />
+            <span style={{
+              flexBasis: `${(attentionCount / plants.length) * 100}%`,
+              background: 'linear-gradient(90deg,#b97f22,#e2a53c)',
+            }} />
+            <span style={{
+              flexBasis: `${(underperformingCount / plants.length) * 100}%`,
+              background: 'linear-gradient(90deg,#a63d2d,#e5604c)',
+            }} />
           </div>
-          <div className="kpi-subtext">Based on 7-day rolling Performance Ratio</div>
+          <div className="fleet-legend">
+            <span className="fleet-legend-item"><span className="legend-pip" style={{ background: '#4cc38a' }} /><strong>{healthyCount}</strong> Healthy</span>
+            <span className="fleet-legend-item"><span className="legend-pip" style={{ background: '#e2a53c' }} /><strong>{attentionCount}</strong> Attention</span>
+            <span className="fleet-legend-item"><span className="legend-pip" style={{ background: '#e5604c' }} /><strong>{underperformingCount}</strong> Under</span>
+          </div>
+          <div className="kpi-subtext">Judged on 7-day rolling Performance Ratio</div>
         </div>
 
-        <div className="kpi-card">
+        <div className="kpi-card reveal" style={{ animationDelay: '220ms' }}>
           <div className="kpi-header">
             <span className="kpi-label">Outage Incidents</span>
-            <AlertTriangle size={20} className="kpi-icon" style={{ color: total_outage_events > 0 ? '#ef4444' : '#10b981' }} />
+            <AlertTriangle size={18} className="kpi-icon" style={{ color: total_outage_events > 0 ? '#e5604c' : '#4cc38a' }} />
           </div>
-          <div className="kpi-value" style={{ color: total_outage_events > 0 ? '#ef4444' : '#10b981' }}>
+          <div className="kpi-value" style={{ color: total_outage_events > 0 ? '#e5604c' : '#4cc38a' }}>
             {total_outage_events}
           </div>
-          <div className="kpi-subtext">Zero generation days during sunlight</div>
+          <div className="kpi-subtext">
+            {total_outage_events > 0
+              ? 'Zero-generation days during usable sunlight'
+              : 'No zero-generation days on record'}
+            {' · '}
+            <span style={{ color: '#a9a294' }}>{data_quality_issues_count} data anomalies sanitized</span>
+          </div>
         </div>
       </div>
 
-      {/* Section Header */}
-      <div className="section-header">
+      {/* ===== Section header ===== */}
+      <div className="section-header reveal">
         <div>
-          <h2 className="section-title">Solar Plant Fleet Status</h2>
+          <div className="kicker">Fleet Registry · 90 Consecutive Days</div>
+          <h2 className="section-title">Solar Plant Health</h2>
           <p className="section-subtitle">
-            Evaluated using 7-day rolling Performance Ratio (PR) excluding outage days &amp; low irradiance (&lt;1.0 kWh/m²)
+            PR = generation ÷ (capacity × irradiance) — outage days &amp; low-irradiance readings excluded from averaging
           </p>
         </div>
         <button
@@ -106,201 +181,137 @@ export default function Overview({
           onClick={onViewAudit}
           title="View data sanitization and anomaly audit log"
         >
-          <ShieldCheck size={15} style={{ color: '#10b981' }} />
-          <span>Data Quality Audit ({data_quality_issues_count} Events)</span>
+          <ShieldCheck size={14} style={{ color: '#4cc38a' }} />
+          <span>Audit Log · {data_quality_issues_count} Events</span>
         </button>
       </div>
 
-      {/* 5 Plant Cards */}
+      {/* ===== Plant cards ===== */}
       <div className="plants-grid">
-        {plants.map((plant) => {
-          const statusClass = getStatusClass(plant.current_status);
-          const prPct = plant.current_pr_7d ? Math.min(100, Math.round(plant.current_pr_7d * 100)) : 0;
-          const barColor =
-            plant.current_status === 'Healthy'
-              ? '#10b981'
-              : plant.current_status === 'Needs attention'
-              ? '#f59e0b'
-              : '#ef4444';
+        {plants.map((plant, idx) => {
+          const meta = STATUS_META[plant.current_status] || STATUS_META.Healthy;
+          const issueIcon =
+            plant.active_issues.length > 0
+              ? plant.active_issues[0].issue_type === 'SUDDEN_DROP'
+                ? <TrendingDown size={13} />
+                : plant.active_issues[0].issue_type === 'GRADUAL_DECLINE'
+                ? <Activity size={13} />
+                : <AlertTriangle size={13} />
+              : null;
 
           return (
             <div
               key={plant.site_id}
-              className="plant-card"
+              className="plant-card reveal"
+              style={{ animationDelay: `${120 + idx * 70}ms`, '--card-glow': meta.glow }}
               onClick={() => onSelectPlant(plant.site_id)}
             >
               <div className="plant-card-top">
                 <div className="site-badge">
                   <span className="site-id-tag">{plant.site_id}</span>
-                  <span>{plant.name.split(' - ')[0]}</span>
+                  <div>
+                    <div className="plant-name">{plant.name.split(' - ')[0]}</div>
+                    <div style={{ fontSize: '0.68rem', color: 'var(--text-dim)', letterSpacing: '0.06em', marginTop: '2px' }}>
+                      {plant.capacity_kw} kW installed · {plant.total_days} days monitored
+                    </div>
+                  </div>
                 </div>
-                <div className={`status-pill ${statusClass}`}>
-                  <span className="status-dot"></span>
-                  {getStatusIcon(plant.current_status)}
+                <div className={`status-pill ${meta.cls}`}>
+                  <span className="status-dot" />
+                  {meta.cls === 'healthy' && <CheckCircle2 size={12} />}
+                  {meta.cls === 'attention' && <AlertTriangle size={12} />}
+                  {meta.cls === 'underperforming' && <AlertCircle size={12} />}
                   <span>{plant.current_status}</span>
                 </div>
               </div>
 
-              {/* Plant Metrics */}
-              <div className="plant-stats">
-                <div className="stat-item">
-                  <span className="stat-title">Capacity</span>
-                  <span className="stat-number">{plant.capacity_kw} kW</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-title">90-Day Total</span>
-                  <span className="stat-number">{(plant.total_generation_kwh / 1000).toFixed(1)} MWh</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-title">Current 7d PR</span>
-                  <span className="stat-number" style={{ color: barColor }}>
-                    {plant.current_pr_7d !== null ? plant.current_pr_7d.toFixed(3) : 'N/A'}
-                  </span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-title">Outages</span>
-                  <span
-                    className="stat-number"
-                    style={{ color: plant.outage_days_count > 0 ? '#ef4444' : '#94a3b8' }}
-                  >
-                    {plant.outage_days_count} {plant.outage_days_count === 1 ? 'day' : 'days'}
-                  </span>
-                </div>
-              </div>
-
-              {/* PR Meter Bar */}
-              <div className="pr-meter-wrap">
-                <div className="pr-meter-label">
-                  <span>7-Day Rolling PR</span>
-                  <strong style={{ color: barColor }}>{prPct}% (Ref: 70%+)</strong>
-                </div>
-                <div className="pr-bar-bg">
-                  <div
-                    className="pr-bar-fill"
-                    style={{
-                      width: `${prPct}%`,
-                      backgroundColor: barColor,
-                      boxShadow: `0 0 10px ${barColor}`,
-                    }}
-                  ></div>
+              {/* Gauge + readings */}
+              <div className="plant-card-body">
+                <PRGauge pr={plant.current_pr_7d} color={meta.color} />
+                <div className="plant-readings">
+                  <div className="stat-item">
+                    <span className="stat-title">90-Day Yield</span>
+                    <span className="stat-number">{(plant.total_generation_kwh / 1000).toFixed(1)} MWh</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-title">Lifetime PR</span>
+                    <span className="stat-number" style={{ color: '#b688e0' }}>
+                      {plant.lifetime_avg_pr?.toFixed(3) ?? '—'}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-title">Outage Days</span>
+                    <span className="stat-number" style={{ color: plant.outage_days_count > 0 ? '#e5604c' : '#6f6a5e' }}>
+                      {plant.outage_days_count}
+                    </span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-title">Flagged Issues</span>
+                    <span className="stat-number" style={{ color: plant.issue_count > 0 ? '#e2a53c' : '#6f6a5e' }}>
+                      {plant.issue_count}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Active Issue Highlights */}
-              <div style={{ marginTop: '16px', flex: 1 }}>
+              {/* Signals */}
+              <div className="chip-stack">
                 {plant.active_issues && plant.active_issues.length > 0 ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <>
                     {plant.active_issues.slice(0, 2).map((iss, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          fontSize: '0.75rem',
-                          background: iss.severity === 'critical' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-                          border: `1px solid ${iss.severity === 'critical' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(245, 158, 11, 0.3)'}`,
-                          color: iss.severity === 'critical' ? '#ef4444' : '#f59e0b',
-                          padding: '6px 10px',
-                          borderRadius: '6px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                        }}
-                      >
-                        {iss.issue_type === 'SUDDEN_DROP' && <TrendingDown size={13} />}
-                        {iss.issue_type === 'OUTAGE' && <AlertTriangle size={13} />}
-                        {iss.issue_type === 'GRADUAL_DECLINE' && <Activity size={13} />}
+                      <div key={i} className={`issue-chip ${iss.severity === 'critical' ? 'critical' : 'warning'}`}>
+                        {issueIcon}
                         <span style={{ fontWeight: 600 }}>{iss.title}</span>
+                        <span style={{ marginLeft: 'auto', fontSize: '0.66rem', fontFamily: 'var(--font-mono)', opacity: 0.75 }}>
+                          {iss.date}
+                        </span>
                       </div>
                     ))}
                     {plant.active_issues.length > 2 && (
-                      <span style={{ fontSize: '0.7rem', color: '#94a3b8', textAlign: 'right' }}>
-                        +{plant.active_issues.length - 2} more detected issues
+                      <span style={{ fontSize: '0.68rem', color: 'var(--text-dim)', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>
+                        +{plant.active_issues.length - 2} more signals
                       </span>
                     )}
-                  </div>
+                  </>
                 ) : (
-                  <div
-                    style={{
-                      fontSize: '0.75rem',
-                      color: '#10b981',
-                      background: 'rgba(16, 185, 129, 0.08)',
-                      border: '1px solid rgba(16, 185, 129, 0.2)',
-                      padding: '6px 10px',
-                      borderRadius: '6px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                    }}
-                  >
+                  <div className="issue-chip ok">
                     <CheckCircle2 size={13} />
-                    <span>Operating within optimal performance specifications</span>
+                    <span>Nominal operation — within healthy PR band</span>
                   </div>
                 )}
               </div>
 
-              {/* Card Footer Action */}
-              <div
-                style={{
-                  marginTop: '16px',
-                  paddingTop: '12px',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  color: 'var(--solar-amber-light)',
-                  fontSize: '0.825rem',
-                  fontWeight: 600,
-                }}
-              >
-                <span>View Plant Analytics</span>
-                <ArrowRight size={16} />
+              <div className="plant-card-cta">
+                <span>Open Analytics</span>
+                <ArrowRight size={15} className="arrow" />
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Take-Home Context & Engineering Notes Banner */}
-      <div
-        style={{
-          background: 'rgba(15, 23, 42, 0.65)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '20px 24px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '20px',
-        }}
-      >
-        <div>
-          <h4 style={{ color: '#fff', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sun size={16} style={{ color: '#f59e0b' }} />
-            Performance Ratio (PR) Physics
-          </h4>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.45' }}>
-            PR accounts for fluctuating sunlight (<span className="mono">generation ÷ [capacity × irradiance]</span>).
-            Plant S5 proves that cloudy weather lowers raw generation, but leaves PR healthy (~0.76).
+      {/* ===== Methodology footer ===== */}
+      <div className="methodology-grid reveal">
+        <div className="method-card">
+          <h4><Sun size={15} style={{ color: '#e6b450' }} /> Fair Comparison via PR</h4>
+          <p>
+            Raw kWh can't compare plants of different sizes under changing weather.
+            <span className="mono"> PR = generation ÷ (capacity × irradiance)</span> normalizes both — plant S5 proves
+            that heavy cloud depresses kWh output while PR stays healthy at ~0.76.
           </p>
         </div>
-
-        <div>
-          <h4 style={{ color: '#fff', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Activity size={16} style={{ color: '#a855f7' }} />
-            7-Day Rolling Window
-          </h4>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.45' }}>
-            Status is judged on the 7-day rolling average to filter daily sensor noise.
-            Outages are flagged separately and excluded from the average. Days with irradiance &lt; 1.0 are skipped.
+        <div className="method-card">
+          <h4><Activity size={15} style={{ color: '#b688e0' }} /> 7-Day Rolling Health</h4>
+          <p>
+            A single day can dip from sensor noise, so status uses the 7-day rolling PR average.
+            Outage days are flagged separately and excluded; days with irradiance &lt; 1.0 kWh/m² are skipped.
           </p>
         </div>
-
-        <div>
-          <h4 style={{ color: '#fff', fontSize: '0.95rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={16} style={{ color: '#10b981' }} />
-            Automated Data Sanitization
-          </h4>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: '1.45' }}>
-            Backend pipeline automatically de-duplicates records, filters impossible sensor spikes (e.g. S2 48,210 kWh spike),
-            rejects negative readings, and audits missing values.
+        <div className="method-card">
+          <h4><ShieldCheck size={15} style={{ color: '#4cc38a' }} /> Sanitized Telemetry</h4>
+          <p>
+            The ingestion pipeline de-duplicates records, rejects impossible sensor spikes
+            (e.g. S2's 48,210 kWh surge), filters negative readings, and audits every correction.
           </p>
         </div>
       </div>
