@@ -22,14 +22,23 @@ def export():
         "quality_logs": [log.model_dump() for log in quality_logs_resp]
     }
     
-    out_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "src", "data")
-    os.makedirs(out_dir, exist_ok=True)
-    out_file = os.path.join(out_dir, "fallbackData.json")
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
-    with open(out_file, "w", encoding="utf-8") as f:
+    # Export to frontend
+    out_dir_frontend = os.path.join(root_dir, "frontend", "src", "data")
+    os.makedirs(out_dir_frontend, exist_ok=True)
+    out_file_frontend = os.path.join(out_dir_frontend, "fallbackData.json")
+    with open(out_file_frontend, "w", encoding="utf-8") as f:
         json.dump(export_payload, f, indent=2)
-        
-    print(f"Successfully exported fallback data to {out_file}")
+    print(f"Successfully exported fallback data to {out_file_frontend}")
+
+    # Export to mobile
+    out_dir_mobile = os.path.join(root_dir, "mobile", "src", "data")
+    os.makedirs(out_dir_mobile, exist_ok=True)
+    out_file_mobile = os.path.join(out_dir_mobile, "fallbackData.json")
+    with open(out_file_mobile, "w", encoding="utf-8") as f:
+        json.dump(export_payload, f, indent=2)
+    print(f"Successfully exported fallback data to {out_file_mobile}")
 
 if __name__ == "__main__":
     export()

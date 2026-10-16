@@ -28,7 +28,8 @@
 
 HelioPulse is engineered with a clean separation of concerns:
 - **Backend**: **Python 3.12 + FastAPI + Pydantic v2**. Provides strict schema validation, automated Swagger/OpenAPI documentation at `/docs`, robust data cleaning, and vectorized time-series rolling calculations.
-- **Frontend**: **React 18 + Vite + Modern Vanilla CSS**. Features a responsive solar-tech dark theme, interactive dual-axis SVG charts, threshold reference bands, problem markers, quick date filters, and empty/loading states.
+- **Frontend (Web)**: **React 18 + Vite + Modern Vanilla CSS**. Features a responsive solar-tech dark theme, interactive dual-axis SVG charts, threshold reference bands, problem markers, quick date filters, and empty/loading states.
+- **Mobile (React Native + Expo)**: **React Native 0.76 + Expo SDK 52 + react-native-svg**. Full 100% feature-parity mobile client with interactive dual-axis SVG charts, threshold zones, date presets, audit modal, and zero-config offline telemetry fallback.
 - **Testing**: **Pytest** test suite with 100% pass rate covering data cleaning, PR calculations, rolling window exclusions, pattern detection, and endpoint contracts.
 
 ```
@@ -43,28 +44,26 @@ Oorjan/
 │   │   └── issue_detector.py    # Daily PR, 7-day rolling PR, Outage, Sudden Drop, Gradual Decline
 │   ├── data/
 │   │   └── solar_plant_data.csv # 90-day telemetry CSV dataset
-│   ├── tests/
-│   │   ├── conftest.py
-│   │   ├── test_api.py          # Endpoint integration tests
-│   │   ├── test_data_cleaner.py # Deduplication & sensor spike tests
-│   │   └── test_issue_detector.py # PR formulas, rolling exclusions, & pattern tests
-│   ├── pytest.ini
+│   ├── tests/                   # Pytest test suite
 │   ├── requirements.txt
 │   └── run.py                   # Standalone server runner
-├── frontend/
+├── frontend/                    # Web client (React 18 + Vite)
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Overview.jsx               # Fleet KPI cards & 5 plant summary cards
-│   │   │   ├── PlantDetail.jsx            # Detail view, tabs, date range filter
-│   │   │   ├── GenerationIrradianceChart.jsx # Dual-axis SVG chart with outage markers
-│   │   │   ├── PerformanceRatioChart.jsx   # PR curve with 0.70/0.60 threshold zones
-│   │   │   └── AuditModal.jsx             # Fleet-wide data sanitization modal
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css            # Solar-tech design system & typography
+│   │   ├── components/          # Overview, PlantDetail, SVG Charts, AuditModal
+│   │   └── index.css            # Solar-tech dark design system
 │   ├── index.html
+│   └── vite.config.js
+├── mobile/                      # Mobile client (React Native + Expo)
+│   ├── App.js                   # Root mobile app with screen navigation
+│   ├── app.json                 # Expo mobile configuration
 │   ├── package.json
-│   └── vite.config.js           # Dev server proxy to port 8000
+│   ├── metro.config.js          # Shared monorepo data watcher
+│   ├── README.md                # Mobile app quickstart guide
+│   └── src/
+│       ├── components/          # KpiCard, PlantCard, SVG Charts, TelemetryTable, AuditModal
+│       ├── screens/             # OverviewScreen, PlantDetailScreen
+│       ├── services/            # solarApi with offline fallback
+│       └── theme/               # Dark solar-tech mobile design tokens
 └── README.md
 ```
 
@@ -93,13 +92,21 @@ python run.py
 ```
 *Backend runs on `http://127.0.0.1:8000` (Interactive API docs at `http://127.0.0.1:8000/docs`).*
 
-#### 2. Start the Frontend Dev Server:
+#### 2. Start the Frontend Dev Server (Web):
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 *Frontend runs on `http://localhost:3000` and automatically proxies `/api` and `/plants` requests to port 8000.*
+
+#### 3. Start the React Native Mobile App:
+```bash
+cd mobile
+npm install
+npm start
+```
+*Press `w` to run on Web, or scan the QR code with **Expo Go** on your physical iPhone / Android device!*
 
 ---
 
