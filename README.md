@@ -165,8 +165,8 @@ curl -X GET http://127.0.0.1:8000/plants
       "capacity_kw": 50.0,
       "current_status": "Healthy",
       "current_pr_7d": 0.7634,
-      "lifetime_avg_pr": 0.7621,
-      "total_generation_kwh": 19280.4,
+      "lifetime_avg_pr": 0.7666,
+      "total_generation_kwh": 19402.0,
       "outage_days_count": 0,
       "total_days": 90,
       "issue_count": 0,
@@ -180,8 +180,8 @@ curl -X GET http://127.0.0.1:8000/plants
       "capacity_kw": 100.0,
       "current_status": "Needs attention",
       "current_pr_7d": 0.6216,
-      "lifetime_avg_pr": 0.6845,
-      "total_generation_kwh": 35210.8,
+      "lifetime_avg_pr": 0.6939,
+      "total_generation_kwh": 35409.8,
       "outage_days_count": 0,
       "total_days": 90,
       "issue_count": 1,
@@ -203,8 +203,8 @@ curl -X GET http://127.0.0.1:8000/plants
       "capacity_kw": 75.0,
       "current_status": "Underperforming",
       "current_pr_7d": 0.4543,
-      "lifetime_avg_pr": 0.5891,
-      "total_generation_kwh": 22415.0,
+      "lifetime_avg_pr": 0.6413,
+      "total_generation_kwh": 24419.4,
       "outage_days_count": 0,
       "total_days": 90,
       "issue_count": 1,
@@ -214,7 +214,7 @@ curl -X GET http://127.0.0.1:8000/plants
           "issue_type": "SUDDEN_DROP",
           "severity": "critical",
           "title": "Sudden Performance Drop (2026-02-25)",
-          "reason": "7-day rolling PR fell by 22.2% (from 0.772 to 0.601) compared with the 7 days prior. Indicates rapid component failure, sub-array isolation, or severe soiling event."
+          "reason": "7-day rolling PR fell by 22.2% (from 0.765 to 0.596) compared with the 7 days prior. Indicates rapid component failure, sub-array isolation, or severe soiling event."
         }
       ],
       "first_date": "2026-01-01",
@@ -226,8 +226,8 @@ curl -X GET http://127.0.0.1:8000/plants
       "capacity_kw": 30.0,
       "current_status": "Healthy",
       "current_pr_7d": 0.7430,
-      "lifetime_avg_pr": 0.7490,
-      "total_generation_kwh": 10850.2,
+      "lifetime_avg_pr": 0.7657,
+      "total_generation_kwh": 10954.9,
       "outage_days_count": 6,
       "total_days": 90,
       "issue_count": 6,
@@ -249,8 +249,8 @@ curl -X GET http://127.0.0.1:8000/plants
       "capacity_kw": 60.0,
       "current_status": "Healthy",
       "current_pr_7d": 0.7543,
-      "lifetime_avg_pr": 0.7582,
-      "total_generation_kwh": 17290.5,
+      "lifetime_avg_pr": 0.7673,
+      "total_generation_kwh": 17550.8,
       "outage_days_count": 0,
       "total_days": 90,
       "issue_count": 0,
@@ -260,14 +260,14 @@ curl -X GET http://127.0.0.1:8000/plants
     }
   ],
   "total_fleet_capacity_kw": 315.0,
-  "total_fleet_generation_kwh": 105046.9,
+  "total_fleet_generation_kwh": 107736.9,
   "fleet_health_summary": {
     "Healthy": 3,
     "Needs attention": 1,
     "Underperforming": 1
   },
   "total_outage_events": 6,
-  "data_quality_issues_count": 14
+  "data_quality_issues_count": 16
 }
 ```
 
@@ -293,8 +293,8 @@ curl -X GET "http://127.0.0.1:8000/plants/S3?start_date=2026-02-15&end_date=2026
     "capacity_kw": 75.0,
     "current_status": "Underperforming",
     "current_pr_7d": 0.4543,
-    "lifetime_avg_pr": 0.5891,
-    "total_generation_kwh": 22415.0,
+    "lifetime_avg_pr": 0.6413,
+    "total_generation_kwh": 24419.4,
     "outage_days_count": 0,
     "total_days": 90,
     "issue_count": 1,
@@ -304,7 +304,7 @@ curl -X GET "http://127.0.0.1:8000/plants/S3?start_date=2026-02-15&end_date=2026
         "issue_type": "SUDDEN_DROP",
         "severity": "critical",
         "title": "Sudden Performance Drop (2026-02-25)",
-        "reason": "7-day rolling PR fell by 22.2% (from 0.772 to 0.601) compared with the 7 days prior. Indicates rapid component failure, sub-array isolation, or severe soiling event."
+        "reason": "7-day rolling PR fell by 22.2% (from 0.765 to 0.596) compared with the 7 days prior. Indicates rapid component failure, sub-array isolation, or severe soiling event."
       }
     ],
     "first_date": "2026-01-01",
@@ -321,7 +321,7 @@ curl -X GET "http://127.0.0.1:8000/plants/S3?start_date=2026-02-15&end_date=2026
       "temperature": 31.3,
       "ideal_generation_kwh": 438.0,
       "pr": 0.7986,
-      "rolling_pr_7d": 0.7852,
+      "rolling_pr_7d": 0.7707,
       "is_outage": false,
       "is_low_irradiance": false,
       "is_anomaly": false,
@@ -337,8 +337,8 @@ curl -X GET "http://127.0.0.1:8000/plants/S3?start_date=2026-02-15&end_date=2026
       "cloud_cover": 21.7,
       "temperature": 27.9,
       "ideal_generation_kwh": 429.75,
-      "pr": 0.4609,
-      "rolling_pr_7d": 0.7394,
+      "pr": 0.461,
+      "rolling_pr_7d": 0.7304,
       "is_outage": false,
       "is_low_irradiance": false,
       "is_anomaly": false,
@@ -352,7 +352,7 @@ curl -X GET "http://127.0.0.1:8000/plants/S3?start_date=2026-02-15&end_date=2026
       "issue_type": "SUDDEN_DROP",
       "severity": "critical",
       "title": "Sudden Performance Drop (2026-02-25)",
-      "reason": "7-day rolling PR fell by 22.2% (from 0.772 to 0.601) compared with the 7 days prior. Indicates rapid component failure, sub-array isolation, or severe soiling event."
+      "reason": "7-day rolling PR fell by 22.2% (from 0.765 to 0.596) compared with the 7 days prior. Indicates rapid component failure, sub-array isolation, or severe soiling event."
     }
   ],
   "data_quality_log": [],
