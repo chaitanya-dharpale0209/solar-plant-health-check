@@ -145,7 +145,7 @@ export default function App() {
             <Sun size={24} />
           </div>
           <div>
-            <div className="brand-title">HelioPulse</div>
+            <div className="brand-title">Oorjan</div>
             <div className="brand-subtitle">Solar Plant Health &amp; Diagnostics</div>
           </div>
         </div>

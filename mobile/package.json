@@ -1,13 +1,15 @@
 {
-  "name": "heliopulse-mobile",
+  "name": "oorjan-mobile",
   "version": "1.0.0",
-  "description": "HelioPulse — Solar Plant Health Check & Diagnostics Mobile App (React Native)",
+  "description": "Oorjan — Solar Plant Health Check & Diagnostics Mobile App (React Native)",
   "main": "index.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:apk": "eas build -p android --profile preview",
+    "build:local": "eas build -p android --profile preview --local"
   },
   "dependencies": {
     "expo": "^57.0.0",

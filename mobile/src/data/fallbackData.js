@@ -1,5 +1,5 @@
 /**
- * HelioPulse Mobile Telemetry Data Provider
+ * Oorjan Mobile Telemetry Data Provider
  * 
  * Automatically loads pre-calculated 90-day solar fleet telemetry,
  * daily Performance Ratios (PR), and detected anomalies (outages, sudden drops, gradual decline).

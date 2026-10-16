@@ -1,7 +1,7 @@
-# 📱 HelioPulse Mobile — React Native Solar Plant Health & Diagnostics
+# 📱 Oorjan Mobile — React Native Solar Plant Health & Diagnostics
 
 > **Full Mobile Application Version (React Native + Expo)**  
-> 100% Feature-parity with the HelioPulse Web Application: real-time telemetry monitoring, dual-axis interactive generation charts, rule-based Performance Ratio (PR) analytics, threshold bands, fault pattern recognition, and offline resilience across 5 solar power installations over 90 days.
+> 100% Feature-parity with the Oorjan Web Application: real-time telemetry monitoring, dual-axis interactive generation charts, rule-based Performance Ratio (PR) analytics, threshold bands, fault pattern recognition, and offline resilience across 5 solar power installations over 90 days.
 
 ---
 

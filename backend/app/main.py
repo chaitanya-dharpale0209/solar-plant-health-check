@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse
 from app.routes import router
 
 app = FastAPI(
-    title="HelioPulse — Solar Plant Health Check API",
+    title="Oorjan — Solar Plant Health Check API",
     description=(
         "Rule-based monitoring API for 5 solar plants across 90 days. "
         "Calculates daily Performance Ratio (PR), 7-day rolling PR, and detects "

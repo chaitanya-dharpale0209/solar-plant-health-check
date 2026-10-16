@@ -1,4 +1,4 @@
-# ☀️ HelioPulse — Solar Plant Health & Diagnostics
+# ☀️ Oorjan — Solar Plant Health & Diagnostics
 
 > **Take-Home Coding Challenge Submission**  
 > Operational telemetry monitoring, rule-based performance ratio (PR) analytics, and fault pattern diagnostics across 5 solar power installations over 90 consecutive days.  
@@ -26,7 +26,7 @@
 
 ## 🏗 Overview & Architecture
 
-HelioPulse is engineered with a clean separation of concerns:
+Oorjan is engineered with a clean separation of concerns:
 - **Backend**: **Python 3.12 + FastAPI + Pydantic v2**. Provides strict schema validation, automated Swagger/OpenAPI documentation at `/docs`, robust data cleaning, and vectorized time-series rolling calculations.
 - **Frontend (Web)**: **React 18 + Vite + Modern Vanilla CSS**. Features a responsive solar-tech dark theme, interactive dual-axis SVG charts, threshold reference bands, problem markers, quick date filters, and empty/loading states.
 - **Mobile (React Native + Expo)**: **React Native 0.76 + Expo SDK 52 + react-native-svg**. Full 100% feature-parity mobile client with interactive dual-axis SVG charts, threshold zones, date presets, audit modal, and zero-config offline telemetry fallback.

@@ -25,7 +25,7 @@ export default function Header({
               <Text style={styles.brandSunIcon}>☀️</Text>
             </View>
             <View>
-              <Text style={styles.brandTitle}>HelioPulse</Text>
+              <Text style={styles.brandTitle}>Oorjan</Text>
               <Text style={styles.brandSubtitle}>Solar Plant Health &amp; Diagnostics</Text>
             </View>
           </View>

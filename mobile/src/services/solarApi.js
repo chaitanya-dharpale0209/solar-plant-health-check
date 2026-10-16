@@ -49,7 +49,7 @@ export const fetchFleetOverview = async () => {
     }
     throw new Error(`HTTP ${res.status}`);
   } catch (err) {
-    console.log('[HelioPulse Mobile] Live API unavailable, activating local telemetry dataset:', err.message);
+    console.log('[Oorjan Mobile] Live API unavailable, activating local telemetry dataset:', err.message);
     if (API_CONFIG.useFallbackWhenOffline && fallbackPayload?.fleet) {
       return { data: fallbackPayload.fleet, isFallback: true };
     }
@@ -80,7 +80,7 @@ export const fetchPlantDetail = async (plantId, startDate = '', endDate = '') =>
     }
     throw new Error(`HTTP ${res.status}`);
   } catch (err) {
-    console.log(`[HelioPulse Mobile] Live detail for ${upperId} unavailable, using offline dataset.`);
+    console.log(`[Oorjan Mobile] Live detail for ${upperId} unavailable, using offline dataset.`);
     if (API_CONFIG.useFallbackWhenOffline && fallbackPayload?.plants?.[upperId]) {
       const rawDetail = JSON.parse(JSON.stringify(fallbackPayload.plants[upperId]));
       

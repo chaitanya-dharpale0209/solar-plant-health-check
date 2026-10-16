@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "HelioPulse Solar",
-    "slug": "heliopulse-solar",
+    "name": "Oorjan",
+    "slug": "oorjan",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
@@ -10,20 +10,26 @@
     "primaryColor": "#f59e0b",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.oorjan.heliopulse"
+      "bundleIdentifier": "com.oorjan.app"
     },
     "android": {
-      "package": "com.oorjan.heliopulse",
+      "package": "com.oorjan.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0b0f19"
       }
     },
     "web": {
-      "name": "HelioPulse Solar — Fleet Diagnostics"
+      "name": "Oorjan — Solar Plant Diagnostics"
     },
     "plugins": [
       "expo-asset",
       "expo-status-bar"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "050cf33b-997b-4960-a60f-58381be70d57"
+      }
+    }
   }
 }
