@@ -4,8 +4,9 @@
 > Operational telemetry monitoring, rule-based performance ratio (PR) analytics, and fault pattern diagnostics across 5 solar power installations over 90 consecutive days.  
 >  
 > - **GitHub Repository**: [https://github.com/chaitanya-dharpale0209/solar-plant-health-check](https://github.com/chaitanya-dharpale0209/solar-plant-health-check)  
-> - **Live Frontend (Vercel)**: [https://oorjan.vercel.app](https://oorjan.vercel.app)  
-> - **Live Backend**: Render Web Service (see [Deployment Guide](#-free-deployment-guide))
+> - **Live Web Application (Vercel)**: [https://oorjan.vercel.app](https://oorjan.vercel.app)  
+> - **Live Backend API (Render)**: [https://solar-plant-health-check.onrender.com](https://solar-plant-health-check.onrender.com)  
+> - **Interactive Swagger API Docs**: [https://solar-plant-health-check.onrender.com/docs](https://solar-plant-health-check.onrender.com/docs)
 
 ---
 
@@ -64,6 +65,7 @@ Oorjan/
 │       ├── screens/             # OverviewScreen, PlantDetailScreen
 │       ├── services/            # solarApi with offline fallback
 │       └── theme/               # Dark solar-tech mobile design tokens
+├── screenshots/                 # Desktop & mobile UI verification screenshots
 └── README.md
 ```
 
@@ -152,13 +154,19 @@ tests/test_issue_detector.py::test_real_dataset_patterns PASSED          [100%]
 
 ## 📡 API Documentation & Endpoints
 
-Interactive Swagger UI is accessible at: **`http://127.0.0.1:8000/docs`**.
+Interactive Swagger UI is accessible at:
+- **Live Cloud**: [https://solar-plant-health-check.onrender.com/docs](https://solar-plant-health-check.onrender.com/docs)
+- **Local Dev**: `http://127.0.0.1:8000/docs`
 
 ### 1. `GET /plants`
 Returns all monitored solar plants with current health status, 7-day rolling PR, capacity, and fleet KPIs.
 
 #### Sample Request:
 ```bash
+# Live Cloud API:
+curl -X GET https://solar-plant-health-check.onrender.com/plants
+
+# Local Dev API:
 curl -X GET http://127.0.0.1:8000/plants
 ```
 
@@ -288,6 +296,10 @@ Returns telemetry readings, daily PR, 7-day rolling PR, flagged problem days, an
 
 #### Sample Request:
 ```bash
+# Live Cloud API:
+curl -X GET "https://solar-plant-health-check.onrender.com/plants/S3?start_date=2026-02-15&end_date=2026-02-28"
+
+# Local Dev API:
 curl -X GET "http://127.0.0.1:8000/plants/S3?start_date=2026-02-15&end_date=2026-02-28"
 ```
 
@@ -538,7 +550,7 @@ This project can be deployed 100% free on **Render**, **Railway**, or **Vercel**
      ```bash
      cd backend && python run.py
      ```
-5. Click **Deploy Web Service**. Render provides an SSL-secured live link (e.g. `https://heliopulse-solar.onrender.com`).
+5. Click **Deploy Web Service**. Render provides an SSL-secured live link: [https://solar-plant-health-check.onrender.com](https://solar-plant-health-check.onrender.com).
 
 ### Option B: Deploy Backend on Render + Frontend on Vercel
 1. **Backend**:
