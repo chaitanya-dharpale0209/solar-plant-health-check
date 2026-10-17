@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { COLORS } from '../theme/colors';
 
 export default function Header({
@@ -21,13 +21,11 @@ export default function Header({
           </TouchableOpacity>
         ) : (
           <View style={styles.brandRow}>
-            <View style={styles.brandIconBox}>
-              <Text style={styles.brandSunIcon}>☀️</Text>
-            </View>
-            <View>
-              <Text style={styles.brandTitle}>Oorjan</Text>
-              <Text style={styles.brandSubtitle}>Solar Plant Health &amp; Diagnostics</Text>
-            </View>
+            <Image
+              source={require('../../assets/oorjan_dark_logo.png')}
+              style={styles.brandLogo}
+              resizeMode="contain"
+            />
           </View>
         )}
 
@@ -108,31 +106,10 @@ const styles = StyleSheet.create({
   brandRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
   },
-  brandIconBox: {
-    width: 38,
-    height: 38,
-    borderRadius: 10,
-    backgroundColor: 'rgba(245, 158, 11, 0.15)',
-    borderWidth: 1,
-    borderColor: 'rgba(245, 158, 11, 0.3)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  brandSunIcon: {
-    fontSize: 18,
-  },
-  brandTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#ffffff',
-    letterSpacing: -0.3,
-  },
-  brandSubtitle: {
-    fontSize: 10.5,
-    color: COLORS.textMuted,
-    fontWeight: '500',
+  brandLogo: {
+    width: 125,
+    height: 36,
   },
   backButton: {
     flexDirection: 'row',

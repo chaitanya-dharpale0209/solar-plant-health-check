@@ -8,18 +8,27 @@
     "newArchEnabled": true,
     "backgroundColor": "#0b0f19",
     "primaryColor": "#f59e0b",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0b0f19"
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.oorjan.app"
+      "bundleIdentifier": "com.oorjan.app",
+      "icon": "./assets/icon.png"
     },
     "android": {
       "package": "com.oorjan.app",
       "versionCode": 1,
       "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0f19"
       }
     },
     "web": {
+      "favicon": "./assets/favicon.png",
       "name": "Oorjan — Solar Plant Diagnostics"
     },
     "plugins": [

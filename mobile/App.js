@@ -11,6 +11,7 @@ import Header from './src/components/Header';
 import OverviewScreen from './src/screens/OverviewScreen';
 import PlantDetailScreen from './src/screens/PlantDetailScreen';
 import AuditModal from './src/components/AuditModal';
+import SplashScreen from './src/components/SplashScreen';
 import {
   fetchFleetOverview,
   fetchPlantDetail,
@@ -23,6 +24,7 @@ export default function App() {
   const [plantDetail, setPlantDetail] = useState(null);
   const [qualityLogs, setQualityLogs] = useState([]);
   const [showAuditModal, setShowAuditModal] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   const [filterStartDate, setFilterStartDate] = useState('');
   const [filterEndDate, setFilterEndDate] = useState('');
@@ -148,6 +150,14 @@ export default function App() {
           logs={qualityLogs}
           onClose={() => setShowAuditModal(false)}
         />
+
+        {/* Animated Oorjan Splash Screen */}
+        {showSplash && (
+          <SplashScreen
+            isReady={!loading && Boolean(fleetData)}
+            onFinish={() => setShowSplash(false)}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
